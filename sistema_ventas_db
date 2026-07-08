@@ -1,0 +1,63 @@
+
+CREATE DATABASE IF NOT EXISTS sistema_ventas;
+USE sistema_ventas;
+
+-- TABLA: usuarios
+-- Requerida para auth_controller.js
+
+CREATE TABLE IF NOT EXISTS usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario VARCHAR(50) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- TABLA: productos
+-- Requerida para productos_controller.js
+
+CREATE TABLE IF NOT EXISTS productos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(150) NOT NULL,
+    codigo_barra VARCHAR(50) UNIQUE,
+    precio DECIMAL(10, 2) NOT NULL,
+    stock_actual INT NOT NULL DEFAULT 0,
+    stock_minimo INT NOT NULL DEFAULT 0,
+    activo TINYINT(1) NOT NULL DEFAULT 1,
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- TABLA: ventas
+-- Requerida para ventas_controller.js
+
+CREATE TABLE IF NOT EXISTS ventas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    total DECIMAL(10, 2) NOT NULL DEFAULT 0.00,
+    fecha DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- TABLA: detalle_venta
+-- Requerida para detalle_venta_controller.js
+
+CREATE TABLE IF NOT EXISTS detalle_venta (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    venta_id INT NOT NULL,
+    producto_id INT NOT NULL,
+    cantidad INT NOT NULL,
+    precio_unitario DECIMAL(10, 2) NOT NULL,
+    CONSTRAINT fk_detalle_venta 
+        FOREIGN KEY (venta_id) REFERENCES ventas(id) ON DELETE CASCADE,
+    CONSTRAINT fk_detalle_producto 
+        FOREIGN KEY (producto_id) REFERENCES productos(id) ON DELETE RESTRICT
+);
+
+-- TABLA: movimientos_stock
+
+CREATE TABLE IF NOT EXISTS movimientos_stock (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    producto_id INT NOT NULL,
+    tipo ENUM('INGRESO', 'SALIDA', 'AJUSTE') NOT NULL,
+    cantidad INT NOT NULL,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_movimiento_producto 
+        FOREIGN KEY (producto_id) REFERENCES productos(id) ON DELETE CASCADE
+);
