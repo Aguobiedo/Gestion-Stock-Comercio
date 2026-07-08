@@ -1,9 +1,8 @@
 
-CREATE DATABASE IF NOT EXISTS sistema_ventas;
-USE sistema_ventas;
+CREATE DATABASE IF NOT EXISTS gestion_stock_comercio;
+USE gestion_stock_comercio;
 
 -- TABLA: usuarios
--- Requerida para auth_controller.js
 
 CREATE TABLE IF NOT EXISTS usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -13,7 +12,6 @@ CREATE TABLE IF NOT EXISTS usuarios (
 );
 
 -- TABLA: productos
--- Requerida para productos_controller.js
 
 CREATE TABLE IF NOT EXISTS productos (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -27,7 +25,6 @@ CREATE TABLE IF NOT EXISTS productos (
 );
 
 -- TABLA: ventas
--- Requerida para ventas_controller.js
 
 CREATE TABLE IF NOT EXISTS ventas (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -36,7 +33,6 @@ CREATE TABLE IF NOT EXISTS ventas (
 );
 
 -- TABLA: detalle_venta
--- Requerida para detalle_venta_controller.js
 
 CREATE TABLE IF NOT EXISTS detalle_venta (
     id INT AUTO_INCREMENT PRIMARY KEY,
